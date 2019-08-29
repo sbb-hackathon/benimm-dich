@@ -11,7 +11,7 @@ import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-KEYWORDS = ["Karriere", "Haushalt", "Liebe", "Intimität", "Alltagsprobleme", "FemaleTroubles", "Beauty"]
+KEYWORDS = ["karriere", "haushalt", "liebe", "sex", "familie", "alltagsprobleme", "femaletroubles", "beauty"]
 
 def check_mentions(api, since_id):
     logger.info("Retrieving mentions")
@@ -26,7 +26,7 @@ def check_mentions(api, since_id):
 
         api.update_status(
             status=answer(tweet),
-            in_reply_to_status_id=tweet.id_str,
+            in_reply_to_status_id=tweet.id_str
         )
     return new_since_id
 
@@ -35,34 +35,38 @@ def follow_user_if_cool_enough(tweet):
         logger.info(f"Start to follow {tweet.user.name}")
         tweet.user.follow()
 
-def answer(tweet, keywords):
+def answer(tweet):
     logger.info(f"Answering to {tweet.user.name}")
 
-    if (keyword in tweet.text.lower() for keyword in KEYWORDS):
-            
-            #get all jsons with certain hashtag
-            with open('data.json') as json_file:
-                data = json.load(json_file)
-                idxs = []
-                for d in enumerate(data):
-                    if keyword in d['hash']:
-                            idxs+=[d['id']]
-                            
-            #random
-            reply_id = random.choice(idxs)
-    # if (keyword in tweet.text.lower() for keyword in keywords):
-    #tweet.entities.hashtags
-    return f"Hallo @{tweet.user.screen_name} " + time.strftime("%I:%M:%S")
+    print(list(map(lambda hashtag: hashtag["text"].lower(), tweet.entities["hashtags"])))
+    for hashtag in map(lambda hashtag: hashtag["text"].lower(), tweet.entities["hashtags"]):
+        if hashtag in KEYWORDS:
+            return f"@{tweet.user.screen_name} {quote(hashtag)}"
+    
+    return f"@{tweet.user.screen_name} {random_quote()}"
+
+def quote(hashtag):
+    matching_quotes = list(filter(lambda o: hashtag in o['hash'], input_json()))
+    selected_quote = random.choice(matching_quotes)
+    return f"{selected_quote['cont']} – ({selected_quote['year']}) {selected_quote['link']}"
+
+def random_quote():
+    selected_quote = random.choice(input_json())
+    return f"{selected_quote['cont']} – ({selected_quote['year']}) {selected_quote['link']}"
+
+def input_json():
+    with open('data.json') as json_file:
+        return json.load(json_file)
 
 def main():
     api = create_api()
-    since_id = os.environ['TW_SINCE_ID']
+    since_id = int(os.environ['TW_SINCE_ID'])
     while True:
         print(since_id)
         since_id = check_mentions(api, since_id)
-        os.environ['TW_SINCE_ID'] = since_id
+        os.environ['TW_SINCE_ID'] = str(since_id)
         logger.info("Waiting...")
-        time.sleep(10)
+        time.sleep(60)
 
 if __name__ == "__main__":
     main()
