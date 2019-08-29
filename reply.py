@@ -28,7 +28,10 @@ def check_mentions(api, since_id):
             api.update_status(
             status=answer(tweet)[0:280],
             in_reply_to_status_id=tweet.id_str
-        )
+            )
+        except:
+            return new_since_id
+            
     return new_since_id
 
 def follow_user_if_cool_enough(tweet):
