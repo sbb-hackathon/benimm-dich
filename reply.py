@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import tweepy
 import logging
@@ -6,13 +6,14 @@ import random
 from config import create_api
 import time
 import json
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 KEYWORDS = ["Karriere", "Haushalt", "Liebe", "Intimität", "Alltagsprobleme", "FemaleTroubles", "Beauty"]
 
-def check_mentions(api, keywords, since_id):
+def check_mentions(api, since_id):
     logger.info("Retrieving mentions")
     new_since_id = since_id
     for tweet in tweepy.Cursor(api.mentions_timeline,
