@@ -31,7 +31,7 @@ def check_mentions(api, since_id):
             )
         except:
             return new_since_id
-            
+
     return new_since_id
 
 def follow_user_if_cool_enough(tweet):
@@ -73,7 +73,7 @@ def main():
         since_id = check_mentions(api, since_id)
         os.environ['TW_SINCE_ID'] = str(since_id)
         logger.info("Waiting...")
-        time.sleep(60)
+        time.sleep(20)
 
 if __name__ == "__main__":
     main()
