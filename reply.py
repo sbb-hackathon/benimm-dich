@@ -2,12 +2,15 @@
 
 import tweepy
 import logging
+import random
 from config import create_api
 import time
 import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+
+KEYWORDS = ["Karriere", "Haushalt", "Liebe", "Intimität", "Alltagsprobleme", "FemaleTroubles", "Beauty"]
 
 def check_mentions(api, keywords, since_id):
     logger.info("Retrieving mentions")
@@ -31,8 +34,21 @@ def follow_user_if_cool_enough(tweet):
         logger.info(f"Start to follow {tweet.user.name}")
         tweet.user.follow()
 
-def answer(tweet):
+def answer(tweet, keywords):
     logger.info(f"Answering to {tweet.user.name}")
+
+    if (keyword in tweet.text.lower() for keyword in KEYWORDS):
+            
+            #get all jsons with certain hashtag
+            with open('data.json') as json_file:
+                data = json.load(json_file)
+                idxs = []
+                for d in enumerate(data):
+                    if keyword in d['hash']:
+                            idxs+=[d['id']]
+                            
+            #random
+            reply_id = random.choice(idxs)
     # if (keyword in tweet.text.lower() for keyword in keywords):
     #tweet.entities.hashtags
     return f"Hallo @{tweet.user.screen_name} " + time.strftime("%I:%M:%S")
@@ -42,7 +58,7 @@ def main():
     since_id = os.environ['TW_SINCE_ID']
     while True:
         print(since_id)
-        since_id = check_mentions(api, ["test"], since_id)
+        since_id = check_mentions(api, since_id)
         os.environ['TW_SINCE_ID'] = since_id
         logger.info("Waiting...")
         time.sleep(10)
