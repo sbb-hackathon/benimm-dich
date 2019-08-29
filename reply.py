@@ -24,10 +24,10 @@ def check_mentions(api, keywords, since_id):
             with open('data.json') as json_file:
                 data = json.load(json_file)
                 idxs = []
-                i=0
+                
                 for i,d in enumerate(data):
                     if keyword in d['hashtags']:
-                            idxs=i
+                            idxs+=[i]
                             
             #random
 
@@ -45,7 +45,7 @@ def main():
     since_id = 1
     while True:
         print(since_id)
-        since_id = check_mentions(api, ["help", "support"], since_id)
+        since_id = check_mentions(api, ["#help", "#support"], since_id)
         logger.info("Waiting...")
         time.sleep(60)
 
