@@ -24,7 +24,8 @@ def check_mentions(api, since_id):
 
         follow_user_if_cool_enough(tweet)    
 
-        api.update_status(
+        try:
+            api.update_status(
             status=answer(tweet)[0:280],
             in_reply_to_status_id=tweet.id_str
         )
@@ -47,8 +48,11 @@ def answer(tweet):
 
 def quote(hashtag):
     matching_quotes = list(filter(lambda o: hashtag in o['hash'], input_json()))
-    selected_quote = random.choice(matching_quotes)
-    return f"{selected_quote['cont']} – ({selected_quote['year']}) {selected_quote['link']}"
+    if matching_quotes:
+        selected_quote = random.choice(matching_quotes)
+        return f"{selected_quote['cont']} – ({selected_quote['year']}) {selected_quote['link']}"
+    else:
+        return random_quote()
 
 def random_quote():
     selected_quote = random.choice(input_json())
