@@ -17,27 +17,11 @@ def check_mentions(api, keywords, since_id):
         new_since_id = max(tweet.id, new_since_id)
         if tweet.in_reply_to_status_id is not None:
             continue
-        if (keyword in tweet.text.lower() for keyword in keywords):
-            logger.info("Answering to {tweet.user.name}")
-            
-            #get all jsons with certain hashtag
-            with open('data.json') as json_file:
-                data = json.load(json_file)
-                idxs = []
-                i=0
-                for i,d in enumerate(data):
-                    if keyword in d['hash']:
-                            idxs=i
-                            
-            #random
 
-            if not (tweet.user.following and count(tweet.user.followers_count) < 15):
-                tweet.user.follow()
-
-            api.update_status(
-                status="Please reach us via DM",
-                in_reply_to_status_id=tweet.id,
-            )
+        api.update_status(
+            status="Hallo",
+            in_reply_to_status_id=tweet.id,
+        )
     return new_since_id
 
 def main():
@@ -45,7 +29,7 @@ def main():
     since_id = 1
     while True:
         print(since_id)
-        since_id = check_mentions(api, ["help", "support"], since_id)
+        since_id = check_mentions(api, ["test"], since_id)
         logger.info("Waiting...")
         time.sleep(60)
 
