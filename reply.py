@@ -26,7 +26,7 @@ def check_mentions(api, keywords, since_id):
                 idxs = []
                 i=0
                 for i,d in enumerate(data):
-                    if keyword in d['hashtags']:
+                    if keyword in d['hash']:
                             idxs=i
                             
             #random
