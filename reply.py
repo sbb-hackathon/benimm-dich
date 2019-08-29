@@ -25,10 +25,11 @@ def check_mentions(api, keywords, since_id):
                 data = json.load(json_file)
                 idxs = []
                 for d in enumerate(data):
-                    if keyword in d['hashtags']:
+                    if keyword in d['hash']:
                             idxs+=[d['id']]
                             
             #random
+
 
             if not (tweet.user.following and count(tweet.user.followers_count) < 15):
                 tweet.user.follow()
