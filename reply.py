@@ -18,16 +18,15 @@ def check_mentions(api, keywords, since_id):
         if tweet.in_reply_to_status_id is not None:
             continue
         if (keyword in tweet.text.lower() for keyword in keywords):
-            logger.info("Answering to {tweet.user.name}")
+            logger.info("Answering to {tweet.user.name}")   
             
             #get all jsons with certain hashtag
             with open('data.json') as json_file:
                 data = json.load(json_file)
                 idxs = []
-                
-                for i,d in enumerate(data):
+                for d in enumerate(data):
                     if keyword in d['hashtags']:
-                            idxs+=[i]
+                            idxs+=[d['id']]
                             
             #random
 
