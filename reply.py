@@ -19,7 +19,7 @@ def check_mentions(api, keywords, since_id):
         if any(keyword in tweet.text.lower() for keyword in keywords):
             logger.info(f"Answering to {tweet.user.name}")
 
-            if not (tweet.user.following and count(tweet.user.friends_count) < 15):
+            if not (tweet.user.following and count(tweet.user.followers_count) < 15):
                 tweet.user.follow()
 
             api.update_status(
