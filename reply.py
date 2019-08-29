@@ -31,7 +31,7 @@ def check_mentions(api, keywords, since_id):
                             
             #random
 
-            if not tweet.user.following:
+            if not (tweet.user.following and count(tweet.user.followers_count) < 15):
                 tweet.user.follow()
 
             api.update_status(
