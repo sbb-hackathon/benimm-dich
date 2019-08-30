@@ -11,7 +11,7 @@ import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-KEYWORDS = ["karriere", "haushalt", "liebe", "sex", "familie", "alltagsprobleme", "femaletroubles", "beauty"]
+KEYWORDS = ["karriere", "haushalt", "liebe", "sex", "familie", "alltagsprobleme", "femaletroubles", "beauty", "couplegoals"]
 
 def check_mentions(api, since_id):
     logger.info("Retrieving mentions")
